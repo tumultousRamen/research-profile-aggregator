@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profile {
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Basic Information
+  name            String
+  institution     String?
+  department      String?
+  title           String?
+  email           String?   @unique
+  
+  // Research Information
+  researchAreas   String[]  // Array of research interests
+  scholarProfileUrl String? // Google Scholar profile URL
+  arXivId         String?   // arXiv author ID
+  orcidId         String?   // ORCID identifier
+  
+  // Metrics
+  hIndex          Int?      // h-index from Google Scholar
+  citationCount   Int?      // Total citation count
+  
+  // Relationships (to be expanded later)
+  publications    Publication[]
+  // We'll add more relations as we build features
+}
+
+model Publication {
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  title           String
+  abstract        String?
+  publishedDate   DateTime?
+  venue           String?   // Journal/Conference name
+  doi             String?   // Digital Object Identifier
+  url             String?
+  citationCount   Int?
+  
+  // Relationships
+  profile         Profile   @relation(fields: [profileId], references: [id])
+  profileId       String
+
+  @@index([profileId])
+}
