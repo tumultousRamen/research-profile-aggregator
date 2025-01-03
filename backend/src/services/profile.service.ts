@@ -1,7 +1,7 @@
 // src/services/profile.service.ts
 
-import { ProfileRepository } from "../repositories/profile.repository.js";
-import { Profile, Publication} from "../types/models.js";
+import { ProfileRepository } from "../repositories/profile.repository";
+import { Profile, Publication} from "../types/models";
 
 export class ProfileService {
   private profileRepository: ProfileRepository;

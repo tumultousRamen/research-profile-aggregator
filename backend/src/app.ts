@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import { profileRoutes } from './routes/profile.routes.js';
+import { profileRoutes } from './routes/profile.routes';
 
 dotenv.config();
 

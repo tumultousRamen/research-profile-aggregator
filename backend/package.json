@@ -2,8 +2,8 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
+    "test:db": "ts-node src/tests/db-tests.ts",
     "dev": "nodemon src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js"
