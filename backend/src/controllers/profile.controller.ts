@@ -35,12 +35,12 @@ export class ProfileController {
     }
   };
 
-  getSummary = async (req: Request, res: Response) => {
-    try {
-      const summary = await this.profileService.getSummary(req.params.id);
-      res.json(summary);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to generate summary' });
-    }
-  };
+  // getSummary = async (req: Request, res: Response) => {
+  //   try {
+  //     const summary = await this.profileService.getSummary(req.params.id);
+  //     res.json(summary);
+  //   } catch (error) {
+  //     res.status(500).json({ error: 'Failed to generate summary' });
+  //   }
+  // };
 }
