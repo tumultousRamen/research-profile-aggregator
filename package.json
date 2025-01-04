@@ -1,7 +1,10 @@
 {
   "dependencies": {
     "@prisma/client": "^6.1.0",
-    "pg": "^8.13.1"
+    "axios": "^1.7.9",
+    "natural": "^8.0.1",
+    "pg": "^8.13.1",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/pg": "^8.11.10",

@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test:db": "ts-node src/tests/db-tests.ts",
+    "test:arxiv": "ts-node src/tests/arxiv-test.ts",
     "dev": "nodemon src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js"
