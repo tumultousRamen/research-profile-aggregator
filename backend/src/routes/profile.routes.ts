@@ -1,3 +1,5 @@
+// src/routes/profile.routes.ts
+
 import { Router } from 'express';
 import { ProfileController } from '../controllers/profile.controller';
 

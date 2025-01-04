@@ -1,3 +1,5 @@
+// src/repositories/profile.repository.ts
+
 import { PrismaClient, Prisma } from '@prisma/client'
 import { Profile, Publication, CreateProfileInput, UpdateProfileInput, CreatePublicationInput, UpdatePublicationInput } from '../types/models'
 

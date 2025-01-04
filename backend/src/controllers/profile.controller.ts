@@ -1,3 +1,5 @@
+// src/controllers/profile.controller.ts
+
 import { Request, Response } from 'express';
 import { ProfileService } from '../services/profile.service';
 
