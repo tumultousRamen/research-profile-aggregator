@@ -31,21 +31,10 @@ async function testArxivApi() {
         console.log('New profile created:', newProfile);
 
         console.log('Fetching papers from Arxiv...');
-        const searchQuery = contentService.buildArxivQuery(newProfile);
-        const response = await axios.get(ARXIV_API_BASE, {
-          params: {
-            search_query: searchQuery,
-            start: 0,
-            max_results: 100,
-            sortBy: 'submittedDate',
-            sortOrder: 'descending'
-          },
-          headers: {
-            'Accept': 'application/xml'
-          }
-        });
+        const papers = await contentService.fetchArxivPapers(newProfile);
 
-        console.log('Arxiv API response data:', response.data);
+        console.log('Arxiv API response data:', papers);
+
     } catch (error) {
         console.error('Failed to create profile and fetch papers:', error);
     }
