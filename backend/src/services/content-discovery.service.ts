@@ -1,6 +1,7 @@
 // src/services/content-discovery.service.ts
 
 import axios from 'axios';
+import { XMLParser } from 'fast-xml-parser';
 import { Profile } from '../types/models';
 
 interface ArxivPaper {
@@ -22,6 +23,17 @@ interface ArxivPaper {
 
 export class ContentDiscoveryService {
   private readonly ARXIV_API_BASE = 'http://export.arxiv.org/api/query';
+  private readonly xmlParser: XMLParser;
+
+  constructor() {
+    this.xmlParser = new XMLParser(
+      {
+        attributeNamePrefix: '_',
+        textNodeName: 'text',
+        ignoreAttributes: false
+      }
+    );
+  }
 
   async fetchArxivPapers(profile: Profile): Promise<ArxivPaper[]> {
     try {
@@ -69,8 +81,48 @@ export class ContentDiscoveryService {
   }
 
   private parseArxivResponse(xmlData: string): ArxivPaper[] {
-    // XML parsing implementation will go here
-    // Will be implemented once we have example XML response
-    return [];
+    const parsed = this.xmlParser.parse(xmlData);
+    const entries = parsed.feed.entry;
+
+    if (!Array.isArray(entries)) {
+      return [];
+    }
+
+    return entries.map((entry: any) => {
+      // Handle multiple authors
+      const authors = Array.isArray(entry.author) 
+        ? entry.author.map((a: any) => a.name.text)
+        : [entry.author.name.text];
+
+      // Extract arXiv ID from the entry ID URL
+      const arxivId = entry.id.text.split('/abs/')[1];
+
+      // Find PDF link
+      const links = Array.isArray(entry.link) ? entry.link : [entry.link];
+      const pdfLink = links.find((link: any) => link._title === 'pdf')._href;
+      const doiLink = links.find((link: any) => link._title === 'doi')?._href;
+
+      // Extract categories
+      const categories = Array.isArray(entry.category) 
+        ? entry.category.map((c: any) => c._term)
+        : [entry.category._term];
+
+      return {
+        title: entry.title.text,
+        authors,
+        summary: entry.summary.text.trim(),
+        publishedDate: new Date(entry.published.text),
+        lastUpdatedDate: new Date(entry.updated.text),
+        doi: entry['arxiv:doi']?.text,
+        arxivId,
+        primaryCategory: entry['arxiv:primary_category']._term,
+        categories,
+        links: {
+          abstract: entry.id.text,
+          pdf: pdfLink,
+          doi: doiLink
+        }
+      };
+    });
   }
 }
